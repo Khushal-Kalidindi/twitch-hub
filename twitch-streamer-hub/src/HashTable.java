@@ -88,6 +88,16 @@ public class HashTable<T extends Comparable<T>> {
 		}
 		return false;
 	}
+	
+	public Object searchAndSpit(T t) {
+		for (int i = 0; i < Table.size(); i++) {
+			Object o = Table.get(i).linearSearchAndSpit(t);
+			if (o != null) {
+				return o;
+			}
+		}
+		return null;
+	}
 
 	/** Manipulation Procedures */
 

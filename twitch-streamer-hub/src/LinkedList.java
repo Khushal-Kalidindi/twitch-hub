@@ -421,6 +421,18 @@ public class LinkedList<T> {
 		}
 		return -1;
 	}
+	
+	public Object linearSearchAndSpit(T value) {
+		int index = 0;
+		positionIterator();
+		while (!offEnd()) {
+			if (value.equals(getIterator()))
+				return getIterator();
+			index++;
+			advanceIterator();
+		}
+		return null;
+	}
 
 	/** CHALLENGE METHODS */
 

@@ -10,7 +10,7 @@ public class User implements Comparable<User> {
 	private int interestCount;
 	private LinkedList<Interest> interests;
 	
-	public User(int id,String name,String username,String password,int friendCount,BST<User> friends,String city, int interestCount) {
+	public User(int id,String name,String username,String password,int friendCount,BST<User> friends,String city, int interestCount, LinkedList<Interest> interests) {
 		this.id = id;
 		this.name = name;
 		this.username = username;
@@ -19,6 +19,7 @@ public class User implements Comparable<User> {
 		this.friends = friends;
 		this.city = city;
 		this.interestCount = interestCount;
+		this.interests = interests;
 	}
 	
 	public User() {
@@ -118,14 +119,14 @@ public class User implements Comparable<User> {
 	
 	
 	/**
-	 * Returns a consistent hash code for each Butterfly by summing the Unicode
-	 * values of each character in the key key = family + species
+	 * Returns a consistent hash code for each User by summing the Unicode
+	 * values of each character in the key key = username + orpassword
 	 * 
 	 * @return the hash code
 	 */
 	@Override
 	public int hashCode() {
-		String key = username + password; // this is the key. The element is the Butterfly Object
+		String key = username + password; // this is the key. The element is the User Object
 		int sum = 0;
 		for (int i = 0; i < key.length(); i++) {
 			sum += (int) key.charAt(i);
@@ -133,8 +134,7 @@ public class User implements Comparable<User> {
 		return sum;
 	}
 	/**
-	 * Returns whether two objects are Butterflies, and have the same family and
-	 * species (only)
+	 * Returns whether two objects are Users
 	 */
 	@Override
 	public boolean equals(Object o) {
@@ -158,7 +158,8 @@ public class User implements Comparable<User> {
 				"friendCount : " +  friendCount + "\n" +
 				"friends : \n" +  friends +
 				"city : " +  city + "\n" +
-				"interestCount : " +  interestCount + "\n";
+				"interestCount : " +  interestCount + "\n"+
+				"interests : " +  interests + "\n";
 		
 	}
 

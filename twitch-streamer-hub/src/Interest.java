@@ -1,5 +1,5 @@
 
-public class Interest {
+public class Interest implements Comparable<Interest>{
 	private String name;
 	private int id;
 	
@@ -9,7 +9,7 @@ public class Interest {
 	}
 	
 	public int hashCode() {
-		String key = name + id; // this is the key. The element is the Butterfly Object
+		String key = name; 
 		int sum = 0;
 		for (int i = 0; i < key.length(); i++) {
 			sum += (int) key.charAt(i);
@@ -18,6 +18,22 @@ public class Interest {
 	}
 	
 	
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	public int getId() {
+		return id;
+	}
+
+	public void setId(int id) {
+		this.id = id;
+	}
+
 	@Override
 	public String toString() {
 		return "Interest [name=" + name + ", id=" + id + "]";
@@ -34,6 +50,16 @@ public class Interest {
 				return true;
 			}
 			return false;
+		}
+		
+	}
+
+	@Override
+	public int compareTo(Interest o) {
+		if (this.name.compareTo(((Interest) o).name) != 0) {
+			return this.name.compareTo(((Interest) o).name);
+		} else {
+			return ((Integer)this.id).compareTo(  (Integer)(((Interest) o).id) );
 		}
 		
 	}

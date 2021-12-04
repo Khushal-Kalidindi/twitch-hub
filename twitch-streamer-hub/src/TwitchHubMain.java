@@ -7,10 +7,13 @@ public class TwitchHubMain {
 		
 		LinkedList<User> userList = uio.getUserList();
 		userList.print();
-		ArrayList<Interest> userInterests = uio.getUserInterestArrList();
-		for(Interest x : userInterests) {
-			System.out.println(x);
-		}
+		
+		HashTable<Interest> userInterests = uio.getUserInterestHashTable();
+		System.out.println(userInterests);
+		
+		ArrayList<BST<User>> uITB = uio.getUserInterestsTotalBST();
+		System.out.println(uITB);
+
 //		BST<String> test = new BST<String>(new String[]{"a","b","c"});
 //		System.out.print(test.toString());
 

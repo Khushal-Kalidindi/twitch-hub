@@ -8,6 +8,14 @@ public class UserDatabaseIO {
 	
 	private LinkedList<User> userList;
 	private ArrayList<User> userArrayList;
+	private BST<User> userBST;
+	private HashTable<Interest> userInterestHashTable;
+	private ArrayList<BST<User>> userInterestsTotalBST;
+	
+	public ArrayList<BST<User>> getUserInterestsTotalBST() {
+		return userInterestsTotalBST;
+	}
+
 	public LinkedList<User> getUserList() {
 		return userList;
 	}
@@ -20,18 +28,16 @@ public class UserDatabaseIO {
 		return userBST;
 	}
 
-	public ArrayList<Interest> getUserInterestArrList() {
-		return userInterestArrList;
+	public HashTable<Interest> getUserInterestHashTable() {
+		return userInterestHashTable;
 	}
-
-	private BST<User> userBST;
-	private ArrayList<Interest> userInterestArrList;
 	
 	public UserDatabaseIO() {
 		userList = new LinkedList<User>();
 		userArrayList = new ArrayList<User>();
 		userBST = new BST<User>();
-		userInterestArrList = new ArrayList<Interest>();
+		userInterestHashTable = new HashTable<Interest>(10);
+		userInterestsTotalBST = new ArrayList<BST<User>>();
 		populateEverything();
 	}
 	
@@ -155,14 +161,24 @@ public class UserDatabaseIO {
 		while(count > 0) {
 			String inter = input.nextLine();
 			Interest i;
-			int temp = userInterestArrList.indexOf(new Interest(inter,0));
-			if(temp == -1) {
-				i = new Interest(inter, userInterestArrList.size());
-				userInterestArrList.add(i);
+			//Search Interest HashTable for Interest i (by matching name)
+			//If interest already exists in HashTable, dont have to add it to HT
+			//If interest does not exist in HashTable, add it 
+			//Keeping track of last interest ID, and then ++ at the end
+			boolean in_hashTable = userInterestHashTable.search(new Interest(inter,0));
+			Interest htSearchResult = (Interest)userInterestHashTable.searchAndSpit(new Interest(inter,0));
+			if(htSearchResult != null) {
+				list.addLast(htSearchResult);
+				userInterestsTotalBST.get(htSearchResult.getId()).insert(o);
 			} else {
-				i = new Interest(inter, temp);
+				i = new Interest(inter, lastInterestID);
+				userInterestsTotalBST.add(new BST<User>());
+				userInterestsTotalBST.get(lastInterestID).insert(o);
+				lastInterestID++;
+				userInterestHashTable.insert(i);
+								
+				list.addLast(i);
 			}
-			list.addLast(i);
 			count--;
 		}
 		o.setInterests(new LinkedList<Interest>(list));
