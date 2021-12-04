@@ -494,5 +494,9 @@ public class BST<T extends Comparable<T>> {
 			postOrder.append(node.data + " ");
 		}
 	}
+	
+	private LinkedList<User> toLinkedList(){
+		return null;
+	}
 
 }
