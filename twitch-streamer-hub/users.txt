@@ -3,8 +3,8 @@ Brandon Ewing
 Atrioc
 glizzyhand69
 2
-1232
-1233
+01
+02
 San Jose
 3
 marketing
@@ -15,18 +15,20 @@ Ludwig Aghren
 Ludwig
 iluvqt
 2
-1231
-1233
+00
+02
 Los Angeles
-1
+2
+mogul money
 gaming
 02
 Nathaniel Stanz
 Stanz
 iluvludwig
 2
-1231
-1232
+00
+01
 Los Angeles
-1
+2
+wikipedia races
 gaming

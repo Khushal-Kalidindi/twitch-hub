@@ -8,6 +8,22 @@ public class UserDatabaseIO {
 	
 	private LinkedList<User> userList;
 	private ArrayList<User> userArrayList;
+	public LinkedList<User> getUserList() {
+		return userList;
+	}
+
+	public ArrayList<User> getUserArrayList() {
+		return userArrayList;
+	}
+
+	public BST<User> getUserBST() {
+		return userBST;
+	}
+
+	public ArrayList<Interest> getUserInterestArrList() {
+		return userInterestArrList;
+	}
+
 	private BST<User> userBST;
 	private ArrayList<Interest> userInterestArrList;
 	
@@ -21,6 +37,7 @@ public class UserDatabaseIO {
 	
 	public void populateEverything() {
 		generateUserLists();
+		//System.out.println("DONE W LISTS");
 		generateUserBST();
 	}
 	
@@ -28,6 +45,7 @@ public class UserDatabaseIO {
 		userList.positionIterator();
 		while(!userList.offEnd()) {
 			userBST.insert(userList.getIterator());
+			userList.advanceIterator();
 		}
 	}
 	
@@ -65,18 +83,23 @@ public class UserDatabaseIO {
             userList.positionIterator();
             input = new Scanner(file);
             while (!userList.offEnd()) {
+            	//System.out.println("\nUSER: " + userList.getIterator().getName());
                 input.nextLine(); //skip id
                 input.nextLine(); //skip name
                 input.nextLine(); //skip username
                 input.nextLine(); //skip password
                 int count1 = Integer.parseInt(input.nextLine()); //get friends
                 User tempUser = userList.getIterator();
-                BST<User> list = new BST<User>();
+                BST<User> friendsBST = new BST<User>();
                 while(count1 > 0) {
-                	list.insert(userArrayList.get(Integer.parseInt(input.nextLine())));
+                	User u = userArrayList.get(Integer.parseInt(input.nextLine()));
+                	//System.out.println("\n----");
+					//System.out.println(u);
+					//System.out.println("----\n");
+                	friendsBST.insert(u);
                 	count1--;
                 }
-                userList.getIterator().setFriends(list);
+                userList.getIterator().setFriends(new BST<User>(friendsBST));
                 input.nextLine(); //skip city
                 int count2 = Integer.parseInt(input.nextLine()); //skip interests
                 while(count2 > 0) {
@@ -134,8 +157,7 @@ public class UserDatabaseIO {
 			Interest i;
 			int temp = userInterestArrList.indexOf(new Interest(inter,0));
 			if(temp == -1) {
-				lastInterestID++;
-				i = new Interest(inter, lastInterestID);
+				i = new Interest(inter, userInterestArrList.size());
 				userInterestArrList.add(i);
 			} else {
 				i = new Interest(inter, temp);
@@ -143,6 +165,7 @@ public class UserDatabaseIO {
 			list.addLast(i);
 			count--;
 		}
+		o.setInterests(new LinkedList<Interest>(list));
 	}
 	
 	private String getUserCity(Scanner input) {

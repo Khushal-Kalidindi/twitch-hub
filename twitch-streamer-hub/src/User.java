@@ -156,7 +156,7 @@ public class User implements Comparable<User> {
 				"username : " +  username + "\n" +
 				"password : " +  password + "\n" +
 				"friendCount : " +  friendCount + "\n" +
-				"friends : " +  friends + "\n" +
+				"friends : \n" +  friends +
 				"city : " +  city + "\n" +
 				"interestCount : " +  interestCount + "\n";
 		
@@ -165,9 +165,7 @@ public class User implements Comparable<User> {
 	//TODO add HashTable for Interests
 	@Override
 	public int compareTo(User o) {
-		if (this.equals(o)) {
-			return 0;
-		} else if (this.name.compareTo(o.name) != 0) {
+		if (this.name.compareTo(o.name) != 0) {
 			return this.name.compareTo(o.name);
 		} else {
 			return ((Integer)this.id).compareTo((Integer)o.id);

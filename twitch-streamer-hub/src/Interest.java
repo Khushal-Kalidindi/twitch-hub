@@ -17,6 +17,12 @@ public class Interest {
 		return sum;
 	}
 	
+	
+	@Override
+	public String toString() {
+		return "Interest [name=" + name + ", id=" + id + "]";
+	}
+
 	@Override
 	public boolean equals(Object o) {
 		if (o == this) {

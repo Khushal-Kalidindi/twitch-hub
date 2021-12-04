@@ -344,6 +344,14 @@ public class LinkedList<T> {
 		}
 		return out + "\n";
 	}
+	
+	public void print() {
+		positionIterator();
+		while(!offEnd()) {
+			System.out.println(getIterator().toString());
+			advanceIterator();
+		}
+	}
 
 	/**
 	 * Determines whether the given Object is another LinkedList, containing the

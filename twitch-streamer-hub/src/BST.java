@@ -495,6 +495,38 @@ public class BST<T extends Comparable<T>> {
 		}
 	}
 	
+	/**
+	 * Returns a String containing the data in order
+	 * 
+	 * @return a String of data in order
+	 */
+	public String inOrderUser() {
+		StringBuilder inOrder = new StringBuilder();
+		inOrderUser(root, inOrder);
+		inOrder.append("\n");
+		return inOrder.toString();
+	}
+
+	/**
+	 * Helper method to inOrderString Inserts the data in order into a String
+	 * 
+	 * @param node    the current Node
+	 * @param inOrder a String containing the data
+	 */
+	private void inOrderUser(Node node, StringBuilder inOrder) {
+		if (node == null) {
+			return;
+		} else {
+			inOrderUser(node.left, inOrder);
+			inOrder.append("\tName: " + ((User)node.data).getName() + "\n" + "\tID: " + ((User)node.data).getId() + "\n" + " ");
+			inOrderUser(node.right, inOrder);
+		}
+	}
+	
+	public String toString() {
+		return inOrderUser();
+	}
+	
 	private LinkedList<User> toLinkedList(){
 		return null;
 	}
