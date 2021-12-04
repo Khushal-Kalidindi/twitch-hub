@@ -171,6 +171,24 @@ public class HashTable<T extends Comparable<T>> {
 			list.advanceIterator();
 		}
 	}
+	
+	/**
+	 * Prints to the console all the keys at a specified bucket in the Table. Each
+	 * element displayed on its own line, with a blank line separating each element
+	 * Above the elements, prints the message "Printing bucket #<bucket>:" Note that
+	 * there is no <> in the output
+	 * 
+	 * @param bucket the index in the Table
+	 * @throws IndexOutOfBoundsException
+	 */
+	public LinkedList<T> getBucket(Object o){
+		int bucket = this.hash((T)o);
+		if (bucket < 0 || bucket >= Table.size()) {
+			System.out.print("NULL BUCK");
+			return null;
+		}
+		return Table.get(bucket);
+	}
 
 	/**
 	 * Prints the first element at each bucket along with a count of the total

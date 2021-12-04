@@ -22,6 +22,11 @@ public class User implements Comparable<User> {
 		this.interests = interests;
 	}
 	
+	public User(String username,String password) {
+		this.username = username;
+		this.password = password;
+	}
+	
 	public User() {
 		
 	}
@@ -89,6 +94,10 @@ public class User implements Comparable<User> {
 
 	public void setUsername(String username) {
 		this.username = username;
+	}
+	
+	public String getUsername() {
+		return username;
 	}
 
 
