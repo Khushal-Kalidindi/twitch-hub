@@ -527,8 +527,5 @@ public class BST<T extends Comparable<T>> {
 		return inOrderUser();
 	}
 	
-	private LinkedList<User> toLinkedList(){
-		return null;
-	}
 
 }

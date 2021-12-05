@@ -10,7 +10,7 @@ public class Authentication {
 		populateAuthTable();
 	}
 	
-	private void populateAuthTable() {
+	public void populateAuthTable() {
 		LinkedList<User> list = uio.getUserList();
 		list.positionIterator();
 		while(!list.offEnd()) {
@@ -26,7 +26,7 @@ public class Authentication {
 			users.positionIterator();
 			while(!users.offEnd()) {
 				User user = users.getIterator();
-				if(username.equals(user.getUsername())) {
+				if(username.toLowerCase().equals(user.getUsername().toLowerCase())) {
 					return user;
 				}
 				users.advanceIterator();
@@ -34,4 +34,17 @@ public class Authentication {
 		}
 		return null;
 	}
+	
+	public boolean validateUsername(String username) {
+		LinkedList<User> userList = uio.getUserList();
+		userList.positionIterator();
+		while(!userList.offEnd()) {
+			if(userList.getIterator().getUsername().toLowerCase().equals(username.toLowerCase()))
+				return false;
+			userList.advanceIterator();
+		}
+		return true;
+	}
+	
+	//public void createAccount(String )
 }

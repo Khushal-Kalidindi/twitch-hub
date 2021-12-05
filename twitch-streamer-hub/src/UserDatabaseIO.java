@@ -27,6 +27,19 @@ public class UserDatabaseIO {
 	public BST<User> getUserBST() {
 		return userBST;
 	}
+	
+	public void updateDataStuctures(User newUser) {
+		userList.addLast(newUser);
+		userArrayList.add(newUser);
+		userBST.insert(newUser);
+		LinkedList<Interest> interests = newUser.getInterests();
+		interests.positionIterator();
+		while(!interests.offEnd()) {
+			validateInterest(newUser, interests.getIterator().getName());
+			interests.advanceIterator();
+		}
+		
+	}
 
 	public HashTable<Interest> getUserInterestHashTable() {
 		return userInterestHashTable;
@@ -81,7 +94,7 @@ public class UserDatabaseIO {
         } catch (Exception ex) {
             ex.printStackTrace();
         }
-		
+		//Second pass w friends
 		try {
             Scanner input = new Scanner(System.in);
             File file = new File(filename);
@@ -145,6 +158,10 @@ public class UserDatabaseIO {
 		return temp;
 	}
 	
+	private String getUserCity(Scanner input) {
+		return input.nextLine();
+	}
+	
 	private void setUserFriendCount(Scanner input, User o) {
 		int count = Integer.parseInt(input.nextLine());
 		o.setFriendCount(count);
@@ -165,27 +182,41 @@ public class UserDatabaseIO {
 			//If interest already exists in HashTable, dont have to add it to HT
 			//If interest does not exist in HashTable, add it 
 			//Keeping track of last interest ID, and then ++ at the end
-			boolean in_hashTable = userInterestHashTable.search(new Interest(inter,0));
-			Interest htSearchResult = (Interest)userInterestHashTable.searchAndSpit(new Interest(inter,0));
-			if(htSearchResult != null) {
-				list.addLast(htSearchResult);
-				userInterestsTotalBST.get(htSearchResult.getId()).insert(o);
-			} else {
-				i = new Interest(inter, lastInterestID);
-				userInterestsTotalBST.add(new BST<User>());
-				userInterestsTotalBST.get(lastInterestID).insert(o);
-				lastInterestID++;
-				userInterestHashTable.insert(i);
-								
-				list.addLast(i);
-			}
+//			boolean in_hashTable = userInterestHashTable.search(new Interest(inter,0));
+//			Interest htSearchResult = (Interest)userInterestHashTable.searchAndSpit(new Interest(inter,0));
+//			if(htSearchResult != null) {
+//				list.addLast(htSearchResult);
+//				userInterestsTotalBST.get(htSearchResult.getId()).insert(o);
+//			} else {
+//				i = new Interest(inter, lastInterestID);
+//				userInterestsTotalBST.add(new BST<User>());
+//				userInterestsTotalBST.get(lastInterestID).insert(o);
+//				lastInterestID++;
+//				userInterestHashTable.insert(i);
+//								
+//				list.addLast(i);
+//			}
+			list.addLast(validateInterest(o,inter));
 			count--;
 		}
 		o.setInterests(new LinkedList<Interest>(list));
 	}
 	
-	private String getUserCity(Scanner input) {
-		return input.nextLine();
+	public Interest validateInterest(User o, String inter) {
+		boolean in_hashTable = userInterestHashTable.search(new Interest(inter,0));
+		Interest htSearchResult = (Interest)userInterestHashTable.searchAndSpit(new Interest(inter,0));
+		if(htSearchResult != null) {
+			userInterestsTotalBST.get(htSearchResult.getId()).insert(o);
+			return htSearchResult;
+		} else {
+			Interest i = new Interest(inter, lastInterestID);
+			userInterestsTotalBST.add(new BST<User>());
+			userInterestsTotalBST.get(lastInterestID).insert(o);
+			lastInterestID++;
+			userInterestHashTable.insert(i);
+							
+			return i;
+		}
 	}
 	
 	public void printDB() {

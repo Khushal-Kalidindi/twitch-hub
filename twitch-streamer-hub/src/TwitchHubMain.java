@@ -6,16 +6,20 @@ public class TwitchHubMain {
 		UserDatabaseIO uio = new UserDatabaseIO();
 		
 		LinkedList<User> userList = uio.getUserList();
-		//userList.print();
+		userList.print();
 		
-		HashTable<Interest> userInterests = uio.getUserInterestHashTable();
-		//System.out.println(userInterests);
+//		HashTable<Interest> userInterests = uio.getUserInterestHashTable();
+//		System.out.println(userInterests);
+//		
+//		ArrayList<BST<User>> uITB = uio.getUserInterestsTotalBST();
+//		System.out.println(uITB);
+//
+//		Authentication auth = new Authentication(uio);
+//		System.out.println(auth.authenticate("Ludwig", "iluvqt"));
+//		System.out.println(auth.validateUsername("ludwigasd"));
 		
-		ArrayList<BST<User>> uITB = uio.getUserInterestsTotalBST();
-		//System.out.println(uITB);
-
-		Authentication auth = new Authentication(uio);
-		System.out.println(auth.authenticate("Ludwig", "iluvqt"));
+		Network n = new Network(uio);
+		
 		
 
 

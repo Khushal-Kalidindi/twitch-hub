@@ -90,8 +90,6 @@ public class User implements Comparable<User> {
 	}
 
 
-
-
 	public void setUsername(String username) {
 		this.username = username;
 	}
