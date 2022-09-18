@@ -1,2 +1,3 @@
-# twitch-hub
-CIS22C Project
+# Twitch Hub
+Java project which simulates social networks
+-
