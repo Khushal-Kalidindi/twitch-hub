@@ -1,6 +1,7 @@
 import java.io.*;
 import java.util.ArrayList;
 import java.util.Scanner;
+import java.io.IOException;
 
 public class UserDatabaseIO {
 	public static final String filename = "users.txt";
@@ -28,16 +29,24 @@ public class UserDatabaseIO {
 		return userBST;
 	}
 	
-	public void updateDataStuctures(User newUser) {
+	public void updateDataStructures(User newUser) {
 		userList.addLast(newUser);
 		userArrayList.add(newUser);
-		userBST.insert(newUser);
+		userBST.insert(newUser);		
+		
 		LinkedList<Interest> interests = newUser.getInterests();
+		LinkedList<Interest> actualInterests = new LinkedList<Interest>();
 		interests.positionIterator();
 		while(!interests.offEnd()) {
-			validateInterest(newUser, interests.getIterator().getName());
+			actualInterests.addLast(validateInterest(newUser, interests.getIterator().getName()));
 			interests.advanceIterator();
 		}
+
+		int len = actualInterests.getLength();
+		for (int i = 0 ; i < len/2; i++) {
+			actualInterests.removeFirst();
+		}
+		newUser.setInterests(actualInterests);
 		
 	}
 
@@ -56,7 +65,6 @@ public class UserDatabaseIO {
 	
 	public void populateEverything() {
 		generateUserLists();
-		//System.out.println("DONE W LISTS");
 		generateUserBST();
 	}
 	
@@ -68,15 +76,42 @@ public class UserDatabaseIO {
 		}
 	}
 	
+	public void writeToFile() throws IOException {
+		PrintWriter pw = new PrintWriter(new FileOutputStream("users.txt", false));
+		for(User user : userArrayList) {
+			pw.println(user.getId());
+			pw.println(user.getName());
+			pw.println(user.getUsername());
+			pw.println(user.getPassword());
+			pw.println(user.getFriendCount());
+			for (User u : user.getFriends().toArrayList()) {
+				pw.println(u.getId());
+			}
+			pw.println(user.getCity());
+			pw.println(user.getInterestCount());
+			LinkedList<Interest> l = user.getInterests();
+			l.positionIterator();
+			while(!l.offEnd()) {
+				pw.println(l.getIterator().getName());
+				l.advanceIterator();
+			}
+		}
+		pw.close();
+		
+		
+	}
+	
+	
+	
+	
 	public void generateUserLists() {
-		//First pass w/0 friends
+		//First pass w/o friends
 		try {
             Scanner input = new Scanner(System.in);
             File file = new File(filename);
             
             input = new Scanner(file);
             while (input.hasNextLine()) {
-                //String line = input.nextLine();
             	User temp = new User();
             	temp.setId(getUserID(input));
             	temp.setName(getUsersName(input));
@@ -102,7 +137,6 @@ public class UserDatabaseIO {
             userList.positionIterator();
             input = new Scanner(file);
             while (!userList.offEnd()) {
-            	//System.out.println("\nUSER: " + userList.getIterator().getName());
                 input.nextLine(); //skip id
                 input.nextLine(); //skip name
                 input.nextLine(); //skip username
@@ -111,10 +145,7 @@ public class UserDatabaseIO {
                 User tempUser = userList.getIterator();
                 BST<User> friendsBST = new BST<User>();
                 while(count1 > 0) {
-                	User u = userArrayList.get(Integer.parseInt(input.nextLine()));
-                	//System.out.println("\n----");
-					//System.out.println(u);
-					//System.out.println("----\n");
+                	User u = userArrayList.get(Integer.parseInt(input.nextLine())-1);
                 	friendsBST.insert(u);
                 	count1--;
                 }
@@ -136,25 +167,21 @@ public class UserDatabaseIO {
 	
 	private int getUserID(Scanner input) {
 		String temp = input.nextLine();
-		System.out.println("getting ID: " + temp);
 		return Integer.parseInt(temp);
 	}
 	
 	private String getUsername(Scanner input) {
 		String temp = input.nextLine();
-		System.out.println("getting username: " + temp);
 		return temp;
 	}
 	
-	private String getUsersName(Scanner input) {  //couldnt think of a better method name im tired
+	private String getUsersName(Scanner input) { 
 		String temp = input.nextLine();
-		System.out.println("getting users name: " + temp);
 		return temp;
 	}
 	
 	private String getPassword(Scanner input) {
 		String temp = input.nextLine();
-		System.out.println("getting Password: " + temp);
 		return temp;
 	}
 	
@@ -174,39 +201,23 @@ public class UserDatabaseIO {
 	private void setInterestStuff(Scanner input, User o) {
 		int count = Integer.parseInt(input.nextLine());
 		o.setInterestCount(count);
+		o.setInterests(new LinkedList<Interest>());
 		LinkedList<Interest> list = new LinkedList<Interest>();
 		while(count > 0) {
 			String inter = input.nextLine();
 			Interest i;
-			//Search Interest HashTable for Interest i (by matching name)
-			//If interest already exists in HashTable, dont have to add it to HT
-			//If interest does not exist in HashTable, add it 
-			//Keeping track of last interest ID, and then ++ at the end
-//			boolean in_hashTable = userInterestHashTable.search(new Interest(inter,0));
-//			Interest htSearchResult = (Interest)userInterestHashTable.searchAndSpit(new Interest(inter,0));
-//			if(htSearchResult != null) {
-//				list.addLast(htSearchResult);
-//				userInterestsTotalBST.get(htSearchResult.getId()).insert(o);
-//			} else {
-//				i = new Interest(inter, lastInterestID);
-//				userInterestsTotalBST.add(new BST<User>());
-//				userInterestsTotalBST.get(lastInterestID).insert(o);
-//				lastInterestID++;
-//				userInterestHashTable.insert(i);
-//								
-//				list.addLast(i);
-//			}
-			list.addLast(validateInterest(o,inter));
+			validateInterest(o,inter);
 			count--;
 		}
-		o.setInterests(new LinkedList<Interest>(list));
 	}
 	
 	public Interest validateInterest(User o, String inter) {
-		boolean in_hashTable = userInterestHashTable.search(new Interest(inter,0));
 		Interest htSearchResult = (Interest)userInterestHashTable.searchAndSpit(new Interest(inter,0));
 		if(htSearchResult != null) {
-			userInterestsTotalBST.get(htSearchResult.getId()).insert(o);
+			if(!userInterestsTotalBST.get(htSearchResult.getId()).search(o)){
+				userInterestsTotalBST.get(htSearchResult.getId()).insert(o);
+				o.getInterests().addLast(htSearchResult);
+			}
 			return htSearchResult;
 		} else {
 			Interest i = new Interest(inter, lastInterestID);
@@ -214,9 +225,19 @@ public class UserDatabaseIO {
 			userInterestsTotalBST.get(lastInterestID).insert(o);
 			lastInterestID++;
 			userInterestHashTable.insert(i);
-							
+			o.getInterests().addLast(i);		
 			return i;
 		}
+	}
+	
+	public void createAccount(User u) {
+		updateDataStructures(u);
+		u.setId(userArrayList.size());
+		
+	}
+	
+	public User createUser(String name,String username,String password,String city, int interestCount, LinkedList<Interest> interests) {
+		return new User(0, name, username, password, 0, new BST<User>(), city, interestCount,interests);
 	}
 	
 	public void printDB() {

@@ -1,10 +1,3 @@
-/**
- * LinkedList.java
- * Defines a doubly-linked list class
- * @author Khushal Kalidindi
- * @author Nathan Shturm
- * CIS 22C, Lab 2
- */
 
 import java.util.NoSuchElementException;
 
@@ -268,7 +261,6 @@ public class LinkedList<T> {
 
 	/**
 	 * removes the element referenced by the iterator
-	 * 
 	 * @precondition Iterator is not null
 	 * @postcondition Element referenced by iterator is removed from LinkedList
 	 * @throws NullPointerException Iterator is null

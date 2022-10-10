@@ -1,9 +1,11 @@
-
 public class Authentication {
-	HashTable<User> authTable;
+	private HashTable<User> authTable;	
+	private UserDatabaseIO uio;
 	
-	UserDatabaseIO uio;
-	
+	public HashTable<User> getAuthTable() {
+		return authTable;
+	}
+
 	public Authentication(UserDatabaseIO uio) {
 		this.uio = uio;
 		this.authTable = new HashTable<User>(50);
@@ -17,6 +19,10 @@ public class Authentication {
 			authTable.insert(list.getIterator());
 			list.advanceIterator();
 		}
+	}
+	
+	public void addUserToAuthTable(User u) {
+		authTable.insert(u);
 	}
 	
 	public User authenticate(String username, String password) {
@@ -40,11 +46,10 @@ public class Authentication {
 		userList.positionIterator();
 		while(!userList.offEnd()) {
 			if(userList.getIterator().getUsername().toLowerCase().equals(username.toLowerCase()))
-				return false;
+				return true;
 			userList.advanceIterator();
 		}
-		return true;
+		return false;
 	}
 	
-	//public void createAccount(String )
 }

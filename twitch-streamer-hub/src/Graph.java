@@ -55,10 +55,19 @@ public class Graph {
 	 * 
 	 * @return the number of edges
 	 */
-	public int getNumEdges() {
-		return edges;
+	
+	
+	public void updateVariables() {
+		this.vertices++;
+		this.adj.add(new LinkedList<Integer>());
+		this.color.add('W');
+		this.distance.add(-1);
+		this.parent.add(0);
+		this.discoverTime.add(-1);
+		this.finishTime.add(-1);
+		
 	}
-
+	
 	/**
 	 * Returns the number of vertices in the graph
 	 * 
@@ -85,6 +94,11 @@ public class Graph {
 	 * @return the distance of vertex v
 	 * @throws IndexOutOfBoundsException when v is out of bounds
 	 */
+	public ArrayList<Integer> getDistanceArrayList() {
+		return distance;
+	}
+	
+	
 	public Integer getDistance(Integer v) throws IndexOutOfBoundsException {
 		if(v <= 0 || v > vertices) {
 			throw new IndexOutOfBoundsException("getDistance: v is out of bounds");
@@ -92,6 +106,12 @@ public class Graph {
 		return distance.get(v);
 	}
 
+	
+	
+	
+	
+	
+	
 	/**
 	 * Returns the value of the parent[v]
 	 * 
@@ -181,6 +201,15 @@ public class Graph {
 		}
 		adj.get(u).addLast(v);
 		edges++;
+	}
+	
+	public void removeDirectedEdge(Integer u, Integer v) throws IndexOutOfBoundsException {
+		if((v <= 0 || v > vertices) || (u <= 0 || u > vertices)) {
+			throw new IndexOutOfBoundsException("addDirectedEdge: u or v is out of bounds");
+		}
+		adj.get(u).iteratorToIndex(adj.get(u).linearSearch(v));
+		adj.get(u).removeIterator();
+		edges--;
 	}
 
 	/**

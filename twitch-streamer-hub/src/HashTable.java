@@ -1,9 +1,3 @@
-/**
- * HashTable.java
- * @author Khushal Kalidindi
- * @author Nathan Shturm
- * CIS 22C, Lab 5
- */
 import java.util.ArrayList;
 import java.util.NoSuchElementException;
 
@@ -36,7 +30,7 @@ public class HashTable<T extends Comparable<T>> {
 	 * @param t the Object
 	 * @return the index in the Table
 	 */
-	private int hash(T t) {
+	public int hash(T t) {
 		int code = t.hashCode();
 		return Math.abs(code % Table.size());
 	}

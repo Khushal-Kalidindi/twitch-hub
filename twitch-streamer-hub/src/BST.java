@@ -1,4 +1,3 @@
-
 import java.util.ArrayList;
 import java.util.NoSuchElementException;
 
@@ -346,13 +345,9 @@ public class BST<T extends Comparable<T>> {
 		}
 	}
 	
-	
-//WORK IN PROGRESS
-	
-	public ArrayList<T> searchAll(T data) {
+	public ArrayList<User> searchAll(User data) {
 		
-		ArrayList<T> list = new ArrayList<T>();
-		
+		ArrayList<User> list = new ArrayList<User>();
 		if (root == null) {
 			return null;
 		} else {
@@ -368,12 +363,12 @@ public class BST<T extends Comparable<T>> {
 	 * @param node the current node to check
 	 * @return whether the data is stored in the tree
 	 */
-	private void searchAll(T data, Node node, ArrayList<T> list) {
+	private void searchAll(User data, Node node, ArrayList<User> list) {
 		if (node == null) {
 			return;
-		} else {
-			if(data.compareTo(node.data) == 0)
-				list.add(node.data);
+		} else {			
+			if( ((User)node.data).getName().toLowerCase().contains(((User)data).getName().toLowerCase()) )
+				list.add((User)node.data);
 			searchAll(data,node.left, list);
 			searchAll(data,node.right, list);
 		}
@@ -500,6 +495,29 @@ public class BST<T extends Comparable<T>> {
 	 * 
 	 * @return a String of data in order
 	 */
+	public ArrayList<T> toArrayList() {
+		ArrayList<T> arlist = new ArrayList<T>();
+		toArrayList(root, arlist);
+		return arlist;
+	}
+
+	/**
+	 * Helper method to inOrderString Inserts the data in order into a String
+	 * 
+	 * @param node    the current Node
+	 * @param inOrder a String containing the data
+	 */
+	private void toArrayList(Node node, ArrayList<T> arlist) {
+		if (node == null) {
+			return;
+		} else {
+			toArrayList(node.left, arlist);
+			arlist.add((T)node.data);
+			toArrayList(node.right, arlist);
+		}
+	}
+	
+	
 	public String inOrderUser() {
 		StringBuilder inOrder = new StringBuilder();
 		inOrderUser(root, inOrder);

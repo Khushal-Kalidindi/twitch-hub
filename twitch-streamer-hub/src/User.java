@@ -57,6 +57,18 @@ public class User implements Comparable<User> {
 
 
 
+	public String getPassword() {
+		return password;
+	}
+
+	public String getCity() {
+		return city;
+	}
+
+	public int getInterestCount() {
+		return interestCount;
+	}
+
 	public void setName(String name) {
 		this.name = name;
 	}
@@ -127,13 +139,13 @@ public class User implements Comparable<User> {
 	
 	/**
 	 * Returns a consistent hash code for each User by summing the Unicode
-	 * values of each character in the key key = username + orpassword
+	 * values of each character in the key key = username + password
 	 * 
 	 * @return the hash code
 	 */
 	@Override
 	public int hashCode() {
-		String key = username + password; // this is the key. The element is the User Object
+		String key = username.toLowerCase() + password; // this is the key. The element is the User Object
 		int sum = 0;
 		for (int i = 0; i < key.length(); i++) {
 			sum += (int) key.charAt(i);
@@ -157,6 +169,43 @@ public class User implements Comparable<User> {
 		}
 	}
 	
+	public void printSelfProfile() {
+		System.out.println("Name: " + name);
+		System.out.println("Username:" + username);
+		System.out.println("Password: " + password);
+		System.out.println("You have " + friendCount + " friends:");
+		for (User friend : friends.toArrayList()) {
+			System.out.println("\t"+friend.getName());
+		}
+		System.out.println("You have "+ interestCount + " interests: ");
+		LinkedList<Interest> temp = interests;
+		temp.positionIterator();
+		while(!temp.offEnd()) {
+			System.out.println("\t"+temp.getIterator().getName());
+			temp.advanceIterator();
+		}		
+	}
+	
+	public void printUserProfile() {
+		System.out.println("----");
+		System.out.println("Name: " + name);
+		System.out.println("Username:" + username);
+		System.out.println(name + " has " + friendCount + " friends:");
+		for (User friend : friends.toArrayList()) {
+			System.out.println("\t"+friend.getName());
+		}
+		System.out.println(name + " has " + interestCount + " interests: ");
+		LinkedList<Interest> temp = interests;
+		temp.positionIterator();
+		while(!temp.offEnd()) {
+			System.out.println("\t"+temp.getIterator().getName());
+			temp.advanceIterator();
+		}
+		System.out.println("----");
+
+	}
+	
+	
 	public String toString() {
 		return "id : " +  id + "\n" +
 				"name : " +  name + "\n" +
@@ -170,7 +219,6 @@ public class User implements Comparable<User> {
 		
 	}
 
-	//TODO add HashTable for Interests
 	@Override
 	public int compareTo(User o) {
 		if (this.name.compareTo(o.name) != 0) {

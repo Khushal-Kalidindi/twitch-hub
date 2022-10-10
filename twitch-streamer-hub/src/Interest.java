@@ -41,9 +41,7 @@ public class Interest implements Comparable<Interest>{
 
 	@Override
 	public boolean equals(Object o) {
-		if (o == this) {
-			return true;
-		} else if (!(o instanceof Interest)) {
+		if (!(o instanceof Interest)) {
 			return false;
 		} else {
 			if (this.name.compareTo(((Interest) o).name) == 0) {
